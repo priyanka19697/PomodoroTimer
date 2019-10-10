@@ -13,25 +13,27 @@ class App extends Component {
       seconds: 0,
       session: "work"
     };
-    this.increaseTime = this.increaseTime.bind(this);
-    this.decreaseTime = this.decreaseTime.bind(this);
+    this.increaseTaskTime = this.increaseTaskTime.bind(this);
+    this.decreaseTaskTime = this.decreaseTaskTime.bind(this);
+    this.increaseBreakTime = this.increaseBreakTime.bind(this);
+    this.decreaseBreakTime = this.decreaseBreakTime.bind(this);
+    this.resetTaskTime = this.resetTaskTime.bind(this);
+    this.resetBreakTime = this.resetBreakTime.bind(this);
+  }
+  increaseTaskTime() {
+    this.setState({
+      tasktime: this.state.tasktime + 1
+    });
+    console.log(this.state, "incremented tasktime");
+  }
+  increaseBreakTime() {
+    this.setState({
+      breaktime: this.state.breaktime + 1
+    });
+    console.log(this.state, "incremented breaktime");
   }
 
-  increaseTime() {
-    if (this.state.session === "work") {
-      this.setState = {
-        tasktime: this.state.tasktime + 1
-      };
-      console.log("incremented tasktime");
-    } else {
-      this.setState = {
-        breaktime: this.state.breaktime + 1
-      };
-      console.log("incremented breaktime");
-    }
-  }
-
-  decreaseTime() {
+  decreaseTaskTime() {
     // this.state.session === "work"
     //   ? (this.setState = {
     //       tasktime: this.state.tasktime - 1
@@ -39,17 +41,37 @@ class App extends Component {
     //   : (this.setState = {
     //       breaktime: this.state.breaktime - 1
     //     });
-    if (this.state.session === "work") {
-      this.setState = {
-        tasktime: this.state.tasktime - 1
-      };
-      console.log("decremented tasktime");
-    } else {
-      this.setState = {
-        breaktime: this.state.breaktime - 1
-      };
-      console.log("decremented breaktime");
-    }
+    this.setState({
+      tasktime: this.state.tasktime - 1
+    });
+    console.log(this.state, "decremented tasktime");
+  }
+  decreaseBreakTime() {
+    this.setState({
+      breaktime: this.state.breaktime - 1
+    });
+    console.log(this.state, "decremented breaktime");
+  }
+
+  resetTaskTime() {
+    this.setState({
+      tasktime: 25
+    });
+    console.log(this.state.tasktime);
+  }
+
+  resetBreakTime() {
+    this.setState({
+      breaktime: 5
+    });
+    console.log(this.state.breaktime);
+  }
+  changeSessionToWork() {
+    this.setState({ session: "work" });
+  }
+
+  changeSessionToBreak() {
+    this.setState({ session: "break" });
   }
 
   render() {
@@ -61,13 +83,15 @@ class App extends Component {
           <span>
             <TaskTimer
               tasktime={this.state.tasktime}
-              increaseTime={this.increaseTime}
-              decreaseTime={this.decreaseTime}
+              increaseTime={this.increaseTaskTime}
+              decreaseTime={this.decreaseTaskTime}
+              reset={this.resetTaskTime}
             />
             <BreakTimer
               breaktime={this.state.breaktime}
-              increaseTime={this.increaseTime}
-              decreaseTime={this.decreaseTime}
+              increaseTime={this.increaseBreakTime}
+              decreaseTime={this.decreaseBreakTime}
+              reset={this.resetBreakTime}
             />
           </span>
         </div>

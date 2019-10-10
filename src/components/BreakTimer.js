@@ -1,25 +1,22 @@
 import React, { Component } from "react";
-import ButtonGroup from "./ButtonGroup";
 
 class BreakTimer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      breaktime: this.props.breaktime,
-      session: "break"
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
+
   render() {
     return (
       <div className="breaktimer">
-        <div>{this.state.breaktime}</div>
+        <div>{this.props.breaktime}</div>
         <div>Break Time</div>
-        <ButtonGroup
-          breaktime={this.state.breaktime}
-          session={this.props.session}
-          increaseTime={this.props.increaseTime}
-          decreaseTime={this.props.decreaseTime}
-        />
+        <div className="buttongroup">
+          <button onClick={this.props.increaseTime}>+</button>
+          <span>
+            <button onClick={this.props.reset}>*</button>
+          </span>
+          <button onClick={this.props.decreaseTime}>-</button>
+        </div>
       </div>
     );
   }
