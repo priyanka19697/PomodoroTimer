@@ -10,16 +10,10 @@ class BreakTimer extends Component {
 
   handleIncrement() {
     this.props.increaseTime();
-    if (this.props.timerRunning === false) {
-      this.props.setCurrentTime(this.props.breaktime);
-    }
   }
 
   handleDecrement() {
     this.props.decreaseTime();
-    if (this.props.timerRunning === false) {
-      this.props.setCurrentTime(this.props.breaktime);
-    }
   }
 
   render() {

@@ -7,13 +7,17 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.initialState = {
       tasktime: 25,
       breaktime: 5,
-      currentTime: "25:00",
+      currentTime: "25 : 00",
       session: "work",
       timerRunning: false,
       timerId: 0
+    };
+
+    this.state = {
+      ...this.initialState
     };
 
     this.increaseTaskTime = this.increaseTaskTime.bind(this);
@@ -36,6 +40,7 @@ class App extends Component {
     this.setState({
       breaktime: this.state.breaktime + 1
     });
+
     console.log(this.state, "incremented breaktime");
   }
 
@@ -47,16 +52,20 @@ class App extends Component {
     //   : (this.setState = {
     //       breaktime: this.state.breaktime - 1
     //     });
-    this.setState({
-      tasktime: this.state.tasktime - 1
-    });
-    console.log(this.state, "decremented tasktime");
+    if (this.state.tasktime > 1) {
+      this.setState({
+        tasktime: this.state.tasktime - 1
+      });
+      console.log(this.state, "decremented tasktime");
+    }
   }
   decreaseBreakTime() {
-    this.setState({
-      breaktime: this.state.breaktime - 1
-    });
-    console.log(this.state, "decremented breaktime");
+    if (this.state.breaktime > 1) {
+      this.setState({
+        breaktime: this.state.breaktime - 1
+      });
+      console.log(this.state, "decremented breaktime");
+    }
   }
 
   resetTaskTime() {
@@ -81,19 +90,23 @@ class App extends Component {
   }
 
   startTimer(duration) {
-    this.setState({
-      timerRunning: true
-    });
+    // this.setState({
+    //   timerRunning: true
+    // });
     let time = duration * 60;
     let minutes, seconds;
     let runningTimer = setInterval(() => {
       this.setState({ timerId: runningTimer });
+      const isTimerRunning = this.state.timerRunning;
       minutes = Math.floor(time / 60);
       seconds = time - minutes * 60;
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
       this.setState({ currentTime: `${minutes} : ${seconds}` });
+      if (isTimerRunning) {
+        time -= 1;
+      }
       if (time === 0) {
         if (this.state.session === "work") {
           this.setState({
@@ -102,32 +115,64 @@ class App extends Component {
           });
           clearInterval(this.state.timerId);
           this.startTimer(this.state.breaktime);
+        } else {
+          this.setState({
+            session: "work",
+            timerRunning: true
+          });
+          clearInterval(this.state.timerId);
+          this.startTimer(this.state.tasktime);
         }
       }
     }, 1000);
   }
 
-  setCurrentTime(time) {
+  setCurrentTime = time => {
     this.setState({
       currentTime: time
     });
-  }
+  };
 
-  setTimerRunning() {
+  setTimerRunning = () => {
     this.setState({
       timerRunning: true
     });
-  }
+  };
+
+  setTimerPaused = () => {
+    this.setState({
+      timerRunning: false
+    });
+  };
+
+  resetPomodoroTimer = () => {
+    this.setState({
+      ...this.initialState,
+      tasktime: this.state.tasktime,
+      breaktime: this.state.breaktime
+    });
+  };
 
   render() {
+    // const timerProps = {
+    //   startTimer: startTimer,
+    //   setCurrentTime: setCurrentTime,
+    //   setTimerRunning: setTimerRunning
+    // }{...timerProps};
     return (
       <div className="app">
         <h1>Pomodoro Timer</h1>
         <Timer
-          state={this.state}
+          // state={this.state}
           startTimer={this.startTimer}
-          setCurrentTime={this.setCurrentTime}
           setTimerRunning={this.setTimerRunning}
+          timerRunning={this.state.timerRunning}
+          setTimerPaused={this.setTimerPaused}
+          resetPomodoroTimer={this.resetPomodoroTimer}
+          session={this.state.session}
+          currentTime={this.state.currentTime}
+          tasktime={this.state.tasktime}
+          breaktime={this.state.breaktime}
         />
         <div>
           <span>
@@ -135,13 +180,13 @@ class App extends Component {
               tasktime={this.state.tasktime}
               increaseTime={this.increaseTaskTime}
               decreaseTime={this.decreaseTaskTime}
-              reset={this.resetTaskTime}
+              resetTaskTime={this.resetTaskTime}
             />
             <BreakTimer
               breaktime={this.state.breaktime}
               increaseTime={this.increaseBreakTime}
               decreaseTime={this.decreaseBreakTime}
-              reset={this.resetBreakTime}
+              resetBreakTime={this.resetBreakTime}
             />
           </span>
         </div>

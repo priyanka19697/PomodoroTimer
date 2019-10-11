@@ -1,36 +1,40 @@
 import React, { Component } from "react";
+// import Button from "./Button";
 
 class Timer extends Component {
   constructor(props) {
     super(props);
-
-    this.startCountDown = this.startCountDown.bind(this);
   }
 
-  startCountDown() {
-    if (this.props.state.timerRunning === true) {
-      this.props.setCurrentTime("25:00");
-      this.props.setTimerRunning();
-    } else {
-      this.props.state.session === "work"
-        ? this.props.startTimer(this.props.state.tasktime)
-        : this.props.startTimer(this.props.state.breaktime);
-    }
-  }
+  startCountDown = () => {
+    const { setTimerRunning, session } = this.props;
+    setTimerRunning();
+    session === "work"
+      ? this.props.startTimer(this.props.tasktime)
+      : this.props.startTimer(this.props.breaktime);
+  };
+
+  pauseCountDown = () => {
+    const { setTimerPaused } = this.props;
+    setTimerPaused();
+  };
 
   componentDidMount() {
-    this.props.state.session === "work"
-      ? this.setState({ time: this.props.state.tasktime })
-      : this.setState({ time: this.props.state.breaktime });
+    const { tasktime, breaktime } = this.props;
+    this.props.session === "work"
+      ? this.setState({ time: tasktime })
+      : this.setState({ time: breaktime });
   }
 
   render() {
     console.log(this.props, "from timer");
     return (
       <div className="timer">
-        <div>{this.props.state.currentTime}</div>
+        <div>{this.props.currentTime}</div>
         <button onClick={this.startCountDown}>start</button>
-        <button>restart</button>
+        <button onClick={this.pauseCountDown}>pause</button>
+        {/* <Button /> */}
+        <button onClick={this.props.resetPomodoroTimer}>reset</button>
       </div>
     );
   }
