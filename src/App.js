@@ -123,7 +123,12 @@ class App extends Component {
     return (
       <div className="app">
         <h1>Pomodoro Timer</h1>
-        <Timer state={this.state} startTimer={this.startTimer} />
+        <Timer
+          state={this.state}
+          startTimer={this.startTimer}
+          setCurrentTime={this.setCurrentTime}
+          setTimerRunning={this.setTimerRunning}
+        />
         <div>
           <span>
             <TaskTimer
