@@ -2,16 +2,22 @@ import React, { Component } from "react";
 // import Button from "./Button";
 
 class Timer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   startCountDown = () => {
-    const { setTimerRunning, session } = this.props;
+    const { setTimerRunning, session, resume } = this.props;
+    const time = this.props.currentTime.split(":").map(function(item) {
+      return item.trim();
+    });
     setTimerRunning();
-    session === "work"
-      ? this.props.startTimer(this.props.tasktime)
-      : this.props.startTimer(this.props.breaktime);
+    if (resume === false) {
+      session === "work"
+        ? this.props.startTimer(this.props.tasktime)
+        : this.props.startTimer(this.props.breaktime);
+    } else {
+      session === "work"
+        ? this.props.resumeTimer(time[0], time[1])
+        : this.props.resumeTimer(time[0], time[1]);
+    }
+    console.log(time);
   };
 
   pauseCountDown = () => {

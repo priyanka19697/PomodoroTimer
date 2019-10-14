@@ -31,6 +31,7 @@ class App extends Component {
     this.startTimer = this.startTimer.bind(this);
     this.setCurrentTime = this.setCurrentTime.bind(this);
     this.setTimerRunning = this.setTimerRunning.bind(this);
+    this.setTimerPaused = this.setTimerPaused.bind(this);
   }
 
   componentDidMount = () => {
@@ -131,6 +132,46 @@ class App extends Component {
     }, 1000);
   };
 
+  resumeTimer = (mins, secs) => {
+    // this.setState({
+    //   timerRunning: true
+    // });
+    let time = mins * 60 + secs;
+    let minutes, seconds;
+    let runningTimer = setInterval(() => {
+      this.setState({ timerId: runningTimer });
+      const isTimerRunning = this.state.timerRunning;
+      minutes = Math.floor(time / 60);
+      seconds = time - minutes * 60;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      this.setState({ currentTime: `${minutes} : ${seconds}` });
+      if (isTimerRunning) {
+        time -= 1;
+      }
+      if (time === 0) {
+        if (this.state.session === "work") {
+          this.setState({
+            session: "break",
+            timerRunning: true
+          });
+          clearInterval(this.state.timerId);
+          this.startTimer(this.state.breaktime);
+        } else if (this.state.session === "break") {
+          this.setState({
+            session: "work",
+            timerRunning: true
+          });
+          clearInterval(this.state.timerId);
+          this.startTimer(this.state.tasktime);
+        } else {
+          window.alert("something went wrong");
+        }
+      }
+    }, 1000);
+  };
+
   setCurrentTime = time => {
     this.setState({
       currentTime: time
@@ -143,23 +184,29 @@ class App extends Component {
     });
   };
 
-  setTimerPaused = () => {
-    this.setState({
-      timerRunning: false,
-      resumetime: this.state.currentTime
-    });
+  setTimerPaused() {
+    let time = this.state.currentTime;
+    console.log(this.state, "before paused");
+    this.setState(
+      {
+        timerRunning: false,
+        resume: true,
+        resumetime: time
+      },
+      () => console.log(this.state, "when timer paused")
+      //for accessing current state, if function make direct call else use a callback function
+    );
     clearInterval(this.state.timerId);
-  };
-
-  resumeTimer;
+    // console.log(this.state, "when timer paused");
+  }
 
   resetPomodoroTimer = () => {
     console.log(this.state, "state while resetting timer");
     clearInterval(this.state.timerId);
     this.setState({
-      tasktime: 25,
-      breaktime: 5,
-      currentTime: this.tasktime + " : 00",
+      tasktime: this.state.tasktime,
+      breaktime: this.state.breaktime,
+      currentTime: this.state.tasktime + " : 00",
       session: "work",
       timerRunning: false,
       timerId: 0,
@@ -189,6 +236,9 @@ class App extends Component {
           tasktime={this.state.tasktime}
           breaktime={this.state.breaktime}
           timerId={this.state.timerId}
+          resume={this.state.resume}
+          resumetime={this.state.resumetime}
+          resumeTimer={this.resumeTimer}
         />
         <div>
           <span>
