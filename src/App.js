@@ -136,7 +136,7 @@ class App extends Component {
     // this.setState({
     //   timerRunning: true
     // });
-    let time = mins * 60 + secs;
+    let time = parseInt(mins) * 60 + parseInt(secs);
     let minutes, seconds;
     let runningTimer = setInterval(() => {
       this.setState({ timerId: runningTimer });

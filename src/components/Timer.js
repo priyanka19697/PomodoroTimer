@@ -3,6 +3,7 @@ import React, { Component } from "react";
 
 class Timer extends Component {
   startCountDown = () => {
+    document.getElementById("start").disabled = true;
     const { setTimerRunning, session, resume } = this.props;
     const time = this.props.currentTime.split(":").map(function(item) {
       return item.trim();
@@ -23,6 +24,7 @@ class Timer extends Component {
   pauseCountDown = () => {
     const { setTimerPaused } = this.props;
     setTimerPaused();
+    document.getElementById("start").disabled = false;
   };
 
   componentDidMount() {
@@ -41,7 +43,9 @@ class Timer extends Component {
     return (
       <div className="timer">
         <div>{this.props.currentTime}</div>
-        <button onClick={this.startCountDown}>start</button>
+        <button id="start" onClick={this.startCountDown}>
+          start
+        </button>
         <button onClick={this.pauseCountDown}>pause</button>
         {/* <Button /> */}
         <button onClick={this.props.resetPomodoroTimer}>reset</button>
