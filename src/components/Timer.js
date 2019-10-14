@@ -26,6 +26,10 @@ class Timer extends Component {
       : this.setState({ time: breaktime });
   }
 
+  // displayProps = () => {
+  //   console.log(this.props);
+  // };
+
   render() {
     console.log(this.props, "from timer");
     return (
