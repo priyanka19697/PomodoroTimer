@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import Button from "./Button";
 
 class Timer extends Component {
   startCountDown = () => {
-    document.getElementById("start").disabled = true;
+    // document.getElementById("start").disabled = true;
     const { setTimerRunning, session, resume } = this.props;
     const time = this.props.currentTime.split(":").map(function(item) {
       return item.trim();
@@ -10,12 +11,12 @@ class Timer extends Component {
     setTimerRunning();
     if (resume === false) {
       session === "work"
-        ? this.props.startTimer(this.props.tasktime)
-        : this.props.startTimer(this.props.breaktime);
+        ? this.props.startTimer("" + this.props.tasktime, "00")
+        : this.props.startTimer("" + this.props.breaktime, "00");
     } else {
       session === "work"
-        ? this.props.resumeTimer(time[0], time[1])
-        : this.props.resumeTimer(time[0], time[1]);
+        ? this.props.startTimer(time[0], time[1])
+        : this.props.startTimer(time[0], time[1]);
     }
     console.log(time);
   };
@@ -23,7 +24,7 @@ class Timer extends Component {
   pauseCountDown = () => {
     const { setTimerPaused } = this.props;
     setTimerPaused();
-    document.getElementById("start").disabled = false;
+    // document.getElementById("start").disabled = false;
   };
 
   componentDidMount() {
@@ -38,11 +39,14 @@ class Timer extends Component {
     return (
       <div className="timer">
         <div>{this.props.currentTime}</div>
-        <button id="start" onClick={this.startCountDown}>
-          start
-        </button>
-        <button onClick={this.pauseCountDown}>pause</button>
-        <button onClick={this.props.resetPomodoroTimer}>reset</button>
+        <span>
+          <Button
+            className="start-pause"
+            startCountDown={this.startCountDown}
+            pauseCountDown={this.pauseCountDown}
+            resetPomodoroTimer={this.props.resetPomodoroTimer}
+          />
+        </span>
       </div>
     );
   }

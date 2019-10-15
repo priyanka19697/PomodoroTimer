@@ -4,33 +4,33 @@ class Button extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      buttonState: "play"
-    };
-
-    // this.onClick = this.onClick.bind(this);
+    this.handleCountDown = this.handleCountDown.bind(this);
   }
 
-  onClick() {
-    if (this.state.buttonState === "play") {
-      this.setState({
-        buttonState: "pause"
-      });
-      handleClick();
-    } else {
-      this.setState({
-        buttonState: "play"
-      });
-      handleClick();
-    }
-  }
+  handleCountDown() {
+    var button = document.getElementById("start-pause");
+    const { pauseCountDown, startCountDown } = this.props;
 
-  handleClick() {
-    if (this.state.buttonState === "play") {
+    if (button.getAttribute("name") === "start") {
+      startCountDown();
+      button.setAttribute("name", "pause");
+      button.innerHTML = "pause";
     } else {
-      this.props.timerRunning = false;
+      button.setAttribute("name", "start");
+      button.innerHTML = "start";
       pauseCountDown();
     }
+  }
+  render() {
+    console.log(this.props, "from timer");
+    return (
+      <div className="timer">
+        <button id="start-pause" name="start" onClick={this.handleCountDown}>
+          start
+        </button>
+        <button onClick={this.props.resetPomodoroTimer}>reset</button>
+      </div>
+    );
   }
 }
 export default Button;

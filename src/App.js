@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Timer from "./components/Timer";
-import TaskTimer from "./components/TaskTimer.js";
-import BreakTimer from "./components/BreakTimer.js";
+import ChildTimer from "./components/ChildTimer.js";
 
 class App extends Component {
   constructor(props) {
@@ -22,110 +21,63 @@ class App extends Component {
       ...this.initialState
     };
 
-    this.increaseTaskTime = this.increaseTaskTime.bind(this);
-    this.decreaseTaskTime = this.decreaseTaskTime.bind(this);
-    this.increaseBreakTime = this.increaseBreakTime.bind(this);
-    this.decreaseBreakTime = this.decreaseBreakTime.bind(this);
-    this.resetTaskTime = this.resetTaskTime.bind(this);
-    this.resetBreakTime = this.resetBreakTime.bind(this);
+    this.increaseTime = this.increaseTime.bind(this);
+    this.decreaseTime = this.decreaseTime.bind(this);
+    this.resetTime = this.resetTime.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.setCurrentTime = this.setCurrentTime.bind(this);
     this.setTimerRunning = this.setTimerRunning.bind(this);
     this.setTimerPaused = this.setTimerPaused.bind(this);
   }
 
-  increaseTaskTime() {
-    this.setState({
-      tasktime: this.state.tasktime + 1
-    });
+  increaseTime(name) {
+    if (name === "Task") {
+      this.setState({
+        tasktime: this.state.tasktime + 1
+      });
+      console.log("increasing" + name + "time");
+    } else {
+      this.setState({
+        breaktime: this.state.breaktime + 1
+      });
+      console.log("increasing" + name + "time");
+    }
   }
-  increaseBreakTime() {
-    this.setState({
-      breaktime: this.state.breaktime + 1
-    });
-  }
-
-  decreaseTaskTime() {
-    // this.state.session === "work"
-    //   ? (this.setState = {
-    //       tasktime: this.state.tasktime - 1
-    //     })
-    //   : (this.setState = {
-    //       breaktime: this.state.breaktime - 1
-    //     });
-    if (this.state.tasktime > 1) {
+  decreaseTime(name) {
+    if (name === "Task") {
       this.setState({
         tasktime: this.state.tasktime - 1
       });
-    }
-  }
-  decreaseBreakTime() {
-    if (this.state.breaktime > 1) {
+      console.log("decreasing" + name + "time");
+    } else {
       this.setState({
-        breaktime: this.state.breaktime - 1
+        breaktime: this.state.breaktime + 1
       });
+      console.log("decreasing" + name - "time");
     }
   }
 
-  resetTaskTime() {
-    this.setState({
-      tasktime: 25
-    });
-    console.log(this.state.tasktime);
+  resetTime(name) {
+    name === "work"
+      ? this.setState({
+          tasktime: 25
+        })
+      : this.setState({
+          breaktime: 5
+        });
   }
 
-  resetBreakTime() {
-    this.setState({
-      breaktime: 5
-    });
-    console.log(this.state.breaktime);
-  }
-  changeSessionToWork() {
-    this.setState({ session: "work" });
-  }
-
-  changeSessionToBreak() {
-    this.setState({ session: "break" });
+  changeSession() {
+    this.state.session === "work"
+      ? this.setState({
+          session: "break"
+        })
+      : this.setState({
+          session: "work"
+        });
   }
 
-  startTimer = duration => {
-    let time = duration * 60;
-    let minutes, seconds;
-    let runningTimer = setInterval(() => {
-      this.setState({ timerId: runningTimer });
-      const isTimerRunning = this.state.timerRunning;
-      minutes = Math.floor(time / 60);
-      seconds = time - minutes * 60;
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
-
-      this.setState({ currentTime: `${minutes} : ${seconds}` });
-      if (isTimerRunning) {
-        time -= 1;
-      }
-      if (time === 0) {
-        if (this.state.session === "work") {
-          this.setState({
-            session: "break",
-            timerRunning: true
-          });
-          clearInterval(this.state.timerId);
-          this.startTimer(this.state.breaktime);
-        } else if (this.state.session === "break") {
-          this.setState({
-            session: "work",
-            timerRunning: true
-          });
-          clearInterval(this.state.timerId);
-          this.startTimer(this.state.tasktime);
-        } else {
-          window.alert("something went wrong");
-        }
-      }
-    }, 1000);
-  };
-
-  resumeTimer = (mins, secs) => {
+  startTimer = (mins, secs) => {
     let time = parseInt(mins) * 60 + parseInt(secs);
     let minutes, seconds;
     let runningTimer = setInterval(() => {
@@ -182,10 +134,11 @@ class App extends Component {
         timerRunning: false,
         resume: true,
         resumetime: time
-      },
-      () => console.log(this.state, "when timer paused")
+      }
+      //() => console.log(this.state, "when timer paused")
       //for accessing current state, if function make direct call else use a callback function
     );
+    console.log(this.state, "when timer paused");
     clearInterval(this.state.timerId);
   }
 
@@ -210,39 +163,37 @@ class App extends Component {
     //   setCurrentTime: setCurrentTime,
     //   setTimerRunning: setTimerRunning
     // }{...timerProps};
+
+    const childTimerProps = {
+      tasktime: this.state.tasktime,
+      increaseTime: this.increaseTime,
+      decreaseTime: this.decreaseTime,
+      reset: this.resetTime,
+      session: this.state.session,
+      breaktime: this.state.breaktime
+    };
+    const timerProps = {
+      startTimer: this.startTimer,
+      setTimerRunning: this.setTimerRunning,
+      timerRunning: this.state.timerRunning,
+      setTimerPaused: this.setTimerPaused,
+      resetPomodoroTimer: this.resetPomodoroTimer,
+      session: this.state.session,
+      currentTime: this.state.currentTime,
+      tasktime: this.state.tasktime,
+      breaktime: this.state.breaktime,
+      timerId: this.state.timerId,
+      resume: this.state.resume,
+      resumetime: this.state.resumetime
+    };
     return (
       <div className="app">
         <h1>Pomodoro Timer</h1>
-        <Timer
-          // state={this.state}
-          startTimer={this.startTimer}
-          setTimerRunning={this.setTimerRunning}
-          timerRunning={this.state.timerRunning}
-          setTimerPaused={this.setTimerPaused}
-          resetPomodoroTimer={this.resetPomodoroTimer}
-          session={this.state.session}
-          currentTime={this.state.currentTime}
-          tasktime={this.state.tasktime}
-          breaktime={this.state.breaktime}
-          timerId={this.state.timerId}
-          resume={this.state.resume}
-          resumetime={this.state.resumetime}
-          resumeTimer={this.resumeTimer}
-        />
+        <Timer {...timerProps} />
         <div>
           <span>
-            <TaskTimer
-              tasktime={this.state.tasktime}
-              increaseTime={this.increaseTaskTime}
-              decreaseTime={this.decreaseTaskTime}
-              reset={this.resetTaskTime}
-            />
-            <BreakTimer
-              breaktime={this.state.breaktime}
-              increaseTime={this.increaseBreakTime}
-              decreaseTime={this.decreaseBreakTime}
-              reset={this.resetBreakTime}
-            />
+            <ChildTimer {...childTimerProps} name="Task" />
+            <ChildTimer {...childTimerProps} name="Break" />
           </span>
         </div>
       </div>

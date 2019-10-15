@@ -3,9 +3,10 @@
 .app {
   text-align: center;
   width: 500px;
-  height: 600px;
+  height: 300px;
   background-color: black;
   color: white;
+  padding-top: 10px;
 }
 
 .timer {
@@ -13,12 +14,12 @@
   margin-bottom: 30px;
 }
 
-.tasktimer {
+.Tasktimer {
   margin-left: 25%;
   float: left;
 }
 
-.breaktimer {
+.Breaktimer {
   margin-right: 25%;
   float: right;
 }
