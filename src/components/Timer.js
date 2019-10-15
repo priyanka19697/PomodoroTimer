@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import Button from "./Button";
 
 class Timer extends Component {
   startCountDown = () => {
@@ -34,10 +33,6 @@ class Timer extends Component {
       : this.setState({ time: breaktime });
   }
 
-  // displayProps = () => {
-  //   console.log(this.props);
-  // };
-
   render() {
     console.log(this.props, "from timer");
     return (
@@ -47,7 +42,6 @@ class Timer extends Component {
           start
         </button>
         <button onClick={this.pauseCountDown}>pause</button>
-        {/* <Button /> */}
         <button onClick={this.props.resetPomodoroTimer}>reset</button>
       </div>
     );

@@ -34,10 +34,6 @@ class App extends Component {
     this.setTimerPaused = this.setTimerPaused.bind(this);
   }
 
-  componentDidMount = () => {
-    //this.startTimer(this.state.tasktime);
-  };
-
   increaseTaskTime() {
     this.setState({
       tasktime: this.state.tasktime + 1
@@ -93,9 +89,6 @@ class App extends Component {
   }
 
   startTimer = duration => {
-    // this.setState({
-    //   timerRunning: true
-    // });
     let time = duration * 60;
     let minutes, seconds;
     let runningTimer = setInterval(() => {
@@ -133,9 +126,6 @@ class App extends Component {
   };
 
   resumeTimer = (mins, secs) => {
-    // this.setState({
-    //   timerRunning: true
-    // });
     let time = parseInt(mins) * 60 + parseInt(secs);
     let minutes, seconds;
     let runningTimer = setInterval(() => {
@@ -197,7 +187,6 @@ class App extends Component {
       //for accessing current state, if function make direct call else use a callback function
     );
     clearInterval(this.state.timerId);
-    // console.log(this.state, "when timer paused");
   }
 
   resetPomodoroTimer = () => {
