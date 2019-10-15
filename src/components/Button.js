@@ -22,7 +22,7 @@ class Button extends Component {
     }
   }
   render() {
-    console.log(this.props, "from timer");
+    console.log(this.props, "from button");
     return (
       <div className="timer">
         <button id="start-pause" name="start" onClick={this.handleCountDown}>

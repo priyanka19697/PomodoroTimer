@@ -21,7 +21,6 @@ class ChildTimer extends Component {
   }
 
   render() {
-    console.log(this.props.name, "from childtimer");
     return (
       <div className={this.props.name + "timer"}>
         {this.props.name === "Task" ? (

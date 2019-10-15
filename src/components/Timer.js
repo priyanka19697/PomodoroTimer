@@ -3,7 +3,6 @@ import Button from "./Button";
 
 class Timer extends Component {
   startCountDown = () => {
-    // document.getElementById("start").disabled = true;
     const { setTimerRunning, session, resume } = this.props;
     const time = this.props.currentTime.split(":").map(function(item) {
       return item.trim();
@@ -18,13 +17,12 @@ class Timer extends Component {
         ? this.props.startTimer(time[0], time[1])
         : this.props.startTimer(time[0], time[1]);
     }
-    console.log(time);
+    console.log(this.props, "from timer");
   };
 
   pauseCountDown = () => {
     const { setTimerPaused } = this.props;
     setTimerPaused();
-    // document.getElementById("start").disabled = false;
   };
 
   componentDidMount() {
@@ -35,7 +33,7 @@ class Timer extends Component {
   }
 
   render() {
-    console.log(this.props, "from timer");
+    console.log(this.props.currentTime, "from timer");
     return (
       <div className="timer">
         <div>{this.props.currentTime}</div>
