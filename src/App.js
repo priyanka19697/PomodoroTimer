@@ -72,16 +72,6 @@ class App extends Component {
         });
   }
 
-  // changeSession() {
-  //   this.state.session === "work"
-  //     ? this.setState({
-  //         session: "break"
-  //       })
-  //     : this.setState({
-  //         session: "work"
-  //       });
-  // }
-
   startTimer = (mins, secs) => {
     console.log(mins, secs, "mins secs");
     let time = parseInt(mins) * 60 + parseInt(secs);
