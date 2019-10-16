@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Timer from "./components/Timer";
 import ChildTimer from "./components/ChildTimer.js";
+import { exportDefaultSpecifier } from "@babel/types";
 
 class App extends Component {
   constructor(props) {
@@ -72,44 +73,42 @@ class App extends Component {
         });
   }
 
+  getTimerRunning(session) {
+    if (session === "work") {
+      this.setState({
+        session: "break",
+        timerRunning: true
+      });
+      clearInterval(this.state.timerId);
+      this.startTimer(this.state.breaktime + "", "00");
+    } else if (session === "break") {
+      this.setState({
+        session: "work",
+        timerRunning: true
+      });
+      clearInterval(this.state.timerId);
+      this.startTimer(this.state.tasktime + "", "00");
+    } else {
+      window.alert("something went wrong");
+    }
+  }
+
   startTimer = (mins, secs) => {
     console.log(mins, secs, "mins secs");
     let time = parseInt(mins) * 60 + parseInt(secs);
-    let minutes, seconds;
     let runningTimer = setInterval(() => {
       this.setState({ timerId: runningTimer });
       const isTimerRunning = this.state.timerRunning;
-      minutes = Math.floor(time / 60);
-      seconds = time - minutes * 60;
+      let minutes = Math.floor(time / 60);
+      let seconds = time - minutes * 60;
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
-
       this.setState({ currentTime: `${minutes} : ${seconds}` });
-
-      console.log(this.state.currentTime, "from running timer function");
-
       if (isTimerRunning) {
         time -= 1;
       }
       if (time === 0) {
-        if (this.state.session === "work") {
-          debugger;
-          this.setState({
-            session: "break",
-            timerRunning: true
-          });
-          clearInterval(this.state.timerId);
-          this.startTimer(this.state.breaktime + "", "00");
-        } else if (this.state.session === "break") {
-          this.setState({
-            session: "work",
-            timerRunning: true
-          });
-          clearInterval(this.state.timerId);
-          this.startTimer(this.state.tasktime + "", "00");
-        } else {
-          window.alert("something went wrong");
-        }
+        this.getTimerRunning(this.state.session);
       }
     }, 1000);
   };
@@ -203,3 +202,22 @@ class App extends Component {
 }
 
 export default App;
+
+//commented from this.getTimerRunning()
+// if (this.state.session === "work") {
+// this.setState({
+//   session: "break",
+//   timerRunning: true
+// });
+// clearInterval(this.state.timerId);
+// this.startTimer(this.state.breaktime + "", "00");
+// } else if (this.state.session === "break") {
+// this.setState({
+//   session: "work",
+//   timerRunning: true
+// });
+// clearInterval(this.state.timerId);
+// this.startTimer(this.state.tasktime + "", "00");
+// } else {
+//   window.alert("something went wrong");
+// }
