@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ButtonGroup from "./ButtonGroup";
 
 class ChildTimer extends Component {
   constructor(props) {
@@ -28,15 +29,15 @@ class ChildTimer extends Component {
         ) : (
           <div>{this.props.breaktime}</div>
         )}
-        {/* <div>{this.props.time}</div> */}
         <div>{this.props.name}time</div>
-        <div className="buttongroup">
-          <button onClick={this.handleIncrement}>+</button>
-          <span>
-            <button onClick={this.reset}>*</button>
-          </span>
-          <button onClick={this.handleDecrement}>-</button>
-        </div>
+        <ButtonGroup
+          name={this.props.name}
+          increaseTime={this.props.increaseTime}
+          decreaseTime={this.props.decreaseTime}
+          handleIncrement={this.handleIncrement}
+          handleDecrement={this.handleDecrement}
+          reset={this.reset}
+        />
       </div>
     );
   }

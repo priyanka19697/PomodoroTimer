@@ -33,16 +33,17 @@ class Timer extends Component {
   }
 
   render() {
-    console.log(this.props.currentTime, "from timer");
+    const { currentTime, resetPomodoroTimer } = this.props;
+    console.log(currentTime, "from timer");
     return (
       <div className="timer">
-        <div>{this.props.currentTime}</div>
+        <div>{currentTime}</div>
         <span>
           <Button
             className="start-pause"
             startCountDown={this.startCountDown}
             pauseCountDown={this.pauseCountDown}
-            resetPomodoroTimer={this.props.resetPomodoroTimer}
+            resetPomodoroTimer={resetPomodoroTimer}
           />
         </span>
       </div>
