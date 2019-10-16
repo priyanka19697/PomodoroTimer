@@ -1,23 +1,28 @@
 import React, { Component } from "react";
 
-class Button extends Component {
+class PlayPauseButton extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      name: "start",
+      value: "start"
+    };
     this.handleCountDown = this.handleCountDown.bind(this);
   }
 
   handleCountDown() {
-    var button = document.getElementById("start-pause");
     const { pauseCountDown, startCountDown } = this.props;
-
-    if (button.getAttribute("name") === "start") {
+    if (this.state.name === "start") {
       startCountDown();
-      button.setAttribute("name", "pause");
-      button.innerHTML = "pause";
+      this.setState({
+        name: "pause",
+        value: "pause"
+      });
     } else {
-      button.setAttribute("name", "start");
-      button.innerHTML = "start";
+      this.setState({
+        name: "start",
+        value: "start"
+      });
       pauseCountDown();
     }
   }
@@ -25,12 +30,16 @@ class Button extends Component {
     console.log(this.props, "from button");
     return (
       <div className="timer">
-        <button id="start-pause" name="start" onClick={this.handleCountDown}>
-          start
+        <button
+          id="start-pause"
+          name={this.state.name}
+          onClick={this.handleCountDown}
+        >
+          {this.state.value}
         </button>
         <button onClick={this.props.resetPomodoroTimer}>reset</button>
       </div>
     );
   }
 }
-export default Button;
+export default PlayPauseButton;

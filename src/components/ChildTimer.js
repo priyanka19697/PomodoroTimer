@@ -11,29 +11,31 @@ class ChildTimer extends Component {
   }
 
   handleIncrement() {
-    this.props.increaseTime(this.props.name);
+    const { increaseTime, name } = this.props;
+    increaseTime(name);
   }
 
   handleDecrement() {
-    this.props.decreaseTime(this.props.name);
+    const { decreaseTime, name } = this.props;
+    decreaseTime(name);
   }
   reset() {
-    this.props.reset(this.props.name);
+    const { reset, name } = this.props;
+    reset(name);
   }
 
   render() {
+    const { name, tasktime, breaktime } = this.props;
     return (
-      <div className={this.props.name + "timer"}>
+      <div className={name + "timer"}>
         {this.props.name === "Task" ? (
-          <div>{this.props.tasktime}</div>
+          <div>{tasktime}</div>
         ) : (
-          <div>{this.props.breaktime}</div>
+          <div>{breaktime}</div>
         )}
-        <div>{this.props.name}time</div>
+        <div>{name}time</div>
         <ButtonGroup
-          name={this.props.name}
-          increaseTime={this.props.increaseTime}
-          decreaseTime={this.props.decreaseTime}
+          name={name}
           handleIncrement={this.handleIncrement}
           handleDecrement={this.handleDecrement}
           reset={this.reset}

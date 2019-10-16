@@ -158,12 +158,6 @@ class App extends Component {
   };
 
   render() {
-    // const timerProps = {
-    //   startTimer: startTimer,
-    //   setCurrentTime: setCurrentTime,
-    //   setTimerRunning: setTimerRunning
-    // }{...timerProps};
-
     const childTimerProps = {
       tasktime: this.state.tasktime,
       increaseTime: this.increaseTime,
@@ -202,22 +196,3 @@ class App extends Component {
 }
 
 export default App;
-
-//commented from this.getTimerRunning()
-// if (this.state.session === "work") {
-// this.setState({
-//   session: "break",
-//   timerRunning: true
-// });
-// clearInterval(this.state.timerId);
-// this.startTimer(this.state.breaktime + "", "00");
-// } else if (this.state.session === "break") {
-// this.setState({
-//   session: "work",
-//   timerRunning: true
-// });
-// clearInterval(this.state.timerId);
-// this.startTimer(this.state.tasktime + "", "00");
-// } else {
-//   window.alert("something went wrong");
-// }

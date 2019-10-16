@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Button from "./Button";
+import PlayPauseButton from "./PlayPauseButton";
 
 class Timer extends Component {
   startCountDown = () => {
@@ -39,7 +39,7 @@ class Timer extends Component {
       <div className="timer">
         <div>{currentTime}</div>
         <span>
-          <Button
+          <PlayPauseButton
             className="start-pause"
             startCountDown={this.startCountDown}
             pauseCountDown={this.pauseCountDown}
